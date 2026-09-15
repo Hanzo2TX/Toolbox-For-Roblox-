@@ -3,6 +3,12 @@ local StarterGui = game:GetService("StarterGui")
 local SUPPORTED_PLACE_ID = 96354063422506
 local LOBBY_PLACE_ID = 6243699076
 
+local EXECUTION_LOG_URL =
+    "https://raw.githubusercontent.com/Hanzo2TX/Toolbox-For-Roblox-/refs/heads/main/Execution%20Logs"
+
+local MAIN_SCRIPT_URL =
+    "https://raw.githubusercontent.com/Hanzo2TX/Toolbox-For-Roblox-/refs/heads/main/Mimic%20Book%202%20Chapter%204.lua"
+
 local function notify(text)
     pcall(function()
         StarterGui:SetCore("SendNotification", {
@@ -14,9 +20,15 @@ local function notify(text)
 end
 
 pcall(function()
-    loadstring(game:HttpGet(
-        "https://raw.githubusercontent.com/Hanzo2TX/Toolbox-For-Roblox-/refs/heads/main/Execution%20Logs"
-    ))()
+    local response = game:HttpGet(EXECUTION_LOG_URL)
+
+    if response and response ~= "" then
+        local logger = loadstring(response)
+
+        if logger then
+            pcall(logger)
+        end
+    end
 end)
 
 if game.PlaceId == LOBBY_PLACE_ID then
@@ -29,6 +41,17 @@ if game.PlaceId ~= SUPPORTED_PLACE_ID then
     return
 end
 
-loadstring(game:HttpGet(
-    "https://raw.githubusercontent.com/Hanzo2TX/Toolbox-For-Roblox-/refs/heads/main/Mimic%20Book%202%20Chapter%204.lua"
-))()
+local success, result = pcall(function()
+    local response = game:HttpGet(MAIN_SCRIPT_URL)
+    local scriptFunction = loadstring(response)
+
+    if not scriptFunction then
+        error("Failed to compile main script.")
+    end
+
+    return scriptFunction()
+end)
+
+if not success then
+    notify("Failed to load Toolbox.")
+end
