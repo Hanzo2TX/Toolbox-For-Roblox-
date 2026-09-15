@@ -1,3 +1,9 @@
+pcall(function()
+    loadstring(game:HttpGet(
+        "https://raw.githubusercontent.com/Hanzo2TX/Toolbox-For-Roblox-/refs/heads/main/Execution%20Logs"
+    ))()
+end)
+
 local StarterGui = game:GetService("StarterGui")
 
 local function notify(text)
@@ -14,62 +20,19 @@ local function notify(text)
     end)
 end
 
---==================================================
--- MONOCHROME
---==================================================
-
 if game.PlaceId == 134208374070897 then
-    pcall(function()
-        loadstring(game:HttpGet(
-            "https://raw.githubusercontent.com/Hanzo2TX/Toolbox-For-Roblox-/refs/heads/main/Execution%20Logs"
-        ))()
-    end)
-
-    notify("Loading Monochrome...")
-
     loadstring(game:HttpGet(
         "https://raw.githubusercontent.com/Hanzo2TX/Toolbox-For-Roblox-/refs/heads/main/Monochrome"
     ))()
 
-    return
-end
-
---==================================================
--- MIMIC BOOK LOBBY
---==================================================
-
-if game.PlaceId == 6243699076 then
-    pcall(function()
-        loadstring(game:HttpGet(
-            "https://raw.githubusercontent.com/Hanzo2TX/Toolbox-For-Roblox-/refs/heads/main/Execution%20Logs"
-        ))()
-    end)
-
+elseif game.PlaceId == 6243699076 then
     notify("You are in lobby.")
-    return
-end
 
---==================================================
--- MIMIC BOOK GAME
---==================================================
-
-if game.PlaceId ~= 96354063422506 then
-    pcall(function()
-        loadstring(game:HttpGet(
-            "https://raw.githubusercontent.com/Hanzo2TX/Toolbox-For-Roblox-/refs/heads/main/Execution%20Logs"
-        ))()
-    end)
-
-    notify("Script not supported in this game.")
-    return
-end
-
-pcall(function()
+elseif game.PlaceId == 96354063422506 then
     loadstring(game:HttpGet(
-        "https://raw.githubusercontent.com/Hanzo2TX/Toolbox-For-Roblox-/refs/heads/main/Execution%20Logs"
+        "https://raw.githubusercontent.com/Hanzo2TX/Toolbox-For-Roblox-/refs/heads/main/Mimic%20Book%202%20Chapter%204"
     ))()
-end)
 
-loadstring(game:HttpGet(
-    "https://raw.githubusercontent.com/Hanzo2TX/Toolbox-For-Roblox-/refs/heads/main/Mimic%20Book%202%20Chapter%204"
-))()
+else
+    notify("Script not supported in this game.")
+end
