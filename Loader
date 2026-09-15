@@ -1,8 +1,5 @@
 local StarterGui = game:GetService("StarterGui")
 
-local SUPPORTED_PLACE_ID = 96354063422506
-local LOBBY_PLACE_ID = 6243699076
-
 local function notify(text)
     task.spawn(function()
         task.wait(0.5)
@@ -17,18 +14,26 @@ local function notify(text)
     end)
 end
 
-if game.PlaceId == LOBBY_PLACE_ID then
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/Hanzo2TX/Toolbox-For-Roblox-/refs/heads/main/Execution%20Logs"))()
+if game.PlaceId == 6243699076 then
+    pcall(function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Hanzo2TX/Toolbox-For-Roblox-/refs/heads/main/Execution%20Logs"))()
+    end)
+
     notify("You are in lobby.")
     return
 end
 
-if game.PlaceId ~= SUPPORTED_PLACE_ID then
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/Hanzo2TX/Toolbox-For-Roblox-/refs/heads/main/Execution%20Logs"))()
+if game.PlaceId ~= 96354063422506 then
+    pcall(function()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/Hanzo2TX/Toolbox-For-Roblox-/refs/heads/main/Execution%20Logs"))()
+    end)
+
     notify("Script not supported in this game.")
     return
 end
 
-loadstring(game:HttpGet("https://raw.githubusercontent.com/Hanzo2TX/Toolbox-For-Roblox-/refs/heads/main/Execution%20Logs"))()
+pcall(function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/Hanzo2TX/Toolbox-For-Roblox-/refs/heads/main/Execution%20Logs"))()
+end)
 
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Hanzo2TX/Toolbox-For-Roblox-/refs/heads/main/Mimic%20Book%202%20Chapter%204"))()
