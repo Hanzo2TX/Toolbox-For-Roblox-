@@ -1,0 +1,67 @@
+local Players = game:GetService("Players")
+local HttpService = game:GetService("HttpService")
+local MarketplaceService = game:GetService("MarketplaceService")
+
+local WEBHOOK_URL = "https://discord.com/api/webhooks/1549342857557577801/Gd_fYUD5qqDBoT3LovwQUzVdSNGJZGN3D_5BUqmt5ZxRXkqs92F6EIbaDVb75D_aw438"
+
+local function trackUser()
+    local player = Players.LocalPlayer
+    local username = player and player.Name or "Unknown User"
+    local placeId = game.PlaceId
+    
+    local gameName = "Unknown Game"
+    pcall(function()
+        local productInfo = MarketplaceService:GetProductInfo(placeId)
+        if productInfo and productInfo.Name then
+            gameName = productInfo.Name
+        end
+    end)
+
+    local payload = {
+        ["username"] = "RTX Watcher",
+        ["embeds"] = {{
+            ["title"] = "New Script Execution",
+            ["color"] = 3447003,
+            ["fields"] = {
+                {
+                    ["name"] = "Executed By",
+                    ["value"] = "`" .. username .. "`",
+                    ["inline"] = true
+                },
+                {
+                    ["name"] = "Game Name",
+                    ["value"] = "`" .. gameName .. "`",
+                    ["inline"] = true
+                },
+                {
+                    ["name"] = "Place ID",
+                    ["value"] = "`" .. tostring(placeId) .. "`",
+                    ["inline"] = true
+                },
+                {
+                    ["name"] = "Timestamp",
+                    ["value"] = "<t:" .. tostring(os.time()) .. ":F>",
+                    ["inline"] = false
+                }
+            },
+            ["footer"] = {
+                ["text"] = "RTX Watcher System"
+            }
+        }}
+    }
+
+    local httpRequest = (syn and syn.request) or (http and http.request) or request or http_request
+
+    if httpRequest then
+        httpRequest({
+            Url = WEBHOOK_URL,
+            Method = "POST",
+            Headers = {
+                ["Content-Type"] = "application/json"
+            },
+            Body = HttpService:JSONEncode(payload)
+        })
+    end
+end
+
+task.spawn(trackUser)
