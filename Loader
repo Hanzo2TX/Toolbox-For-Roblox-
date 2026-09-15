@@ -1,1 +1,34 @@
+local StarterGui = game:GetService("StarterGui")
 
+local SUPPORTED_PLACE_ID = 96354063422506
+local LOBBY_PLACE_ID = 6243699076
+
+local function notify(text)
+    pcall(function()
+        StarterGui:SetCore("SendNotification", {
+            Title = "Toolbox",
+            Text = text,
+            Duration = 5
+        })
+    end)
+end
+
+pcall(function()
+    loadstring(game:HttpGet(
+        "https://raw.githubusercontent.com/Hanzo2TX/Toolbox-For-Roblox-/refs/heads/main/Execution%20Logs"
+    ))()
+end)
+
+if game.PlaceId == LOBBY_PLACE_ID then
+    notify("You are in lobby.")
+    return
+end
+
+if game.PlaceId ~= SUPPORTED_PLACE_ID then
+    notify("Script not supported in this game.")
+    return
+end
+
+loadstring(game:HttpGet(
+    "https://raw.githubusercontent.com/Hanzo2TX/Toolbox-For-Roblox-/refs/heads/main/Mimic%20Book%202%20Chapter%204.lua"
+))()
