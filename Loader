@@ -33,6 +33,11 @@ elseif game.PlaceId == 96354063422506 then
         "https://raw.githubusercontent.com/Hanzo2TX/Toolbox-For-Roblox-/refs/heads/main/Mimic%20Book%202%20Chapter%204"
     ))()
 
+elseif game.PlaceId == 14908286297 then
+    loadstring(game:HttpGet(
+        "https://raw.githubusercontent.com/Hanzo2TX/Toolbox-For-Roblox-/refs/heads/main/Residence%20Massacre%20-%20Spirit%20Helper"
+    ))()
+
 else
     notify("Script not supported in this game.")
 end
