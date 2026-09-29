@@ -1151,8 +1151,8 @@ local UI_Elements = {}
 local MainPlate = Instance.new("Frame", ToolboxGui)
 MainPlate.BorderSizePixel = 0
 MainPlate.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-MainPlate.Size = UDim2.new(0.56843, 0, 0.92217, 0)
-MainPlate.Position = UDim2.new(0.007, 0, 0.065, 0)
+MainPlate.Size = UDim2.new(0.56843, 0, 0.955, 0)
+MainPlate.Position = UDim2.new(0.007, 0, 0.045, 0)
 MainPlate.Name = "Main Plate"
 MainPlate.BackgroundTransparency = 0.5
 Instance.new("UICorner", MainPlate)
@@ -1160,7 +1160,6 @@ local MainStroke = Instance.new("UIStroke", MainPlate)
 MainStroke.Thickness = 4
 MainStroke.Color = WHITE
 RegisterRGB(MainStroke, "Stroke", WHITE)
-Instance.new("UIAspectRatioConstraint", MainPlate).AspectRatio = 1.43172
 UI_Elements.Main = MainPlate
 
 local LinkPlate = Instance.new("Frame", ToolboxGui)
