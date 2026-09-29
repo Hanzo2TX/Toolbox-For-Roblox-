@@ -1152,7 +1152,7 @@ local MainPlate = Instance.new("Frame", ToolboxGui)
 MainPlate.BorderSizePixel = 0
 MainPlate.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 MainPlate.Size = UDim2.new(0.56843, 0, 0.92217, 0)
-MainPlate.Position = UDim2.new(0.007, 0, 0.052, 0)
+MainPlate.Position = UDim2.new(0.007, 0, 0.065, 0)
 MainPlate.Name = "Main Plate"
 MainPlate.BackgroundTransparency = 0.5
 Instance.new("UICorner", MainPlate)
@@ -1166,8 +1166,8 @@ UI_Elements.Main = MainPlate
 local LinkPlate = Instance.new("Frame", ToolboxGui)
 LinkPlate.BorderSizePixel = 0
 LinkPlate.BackgroundColor3 = WHITE
-LinkPlate.Size = UDim2.new(0.06296, 0, 0.90998, 0)
-LinkPlate.Position = UDim2.new(0.01224, 0, 0.06419, 0)
+LinkPlate.Size = UDim2.new(0.06296, 0, 0.935, 0)
+LinkPlate.Position = UDim2.new(0.01224, 0, 0.055, 0)
 LinkPlate.Name = "Link Plate"
 LinkPlate.BackgroundTransparency = 1
 Instance.new("UICorner", LinkPlate)
@@ -1181,8 +1181,8 @@ UI_Elements.Links = LinkPlate
 local CatListPlate = Instance.new("Frame", ToolboxGui)
 CatListPlate.BorderSizePixel = 0
 CatListPlate.BackgroundColor3 = WHITE
-CatListPlate.Size = UDim2.new(0.20289, 0, 0.90998, 0)
-CatListPlate.Position = UDim2.new(0.08395, 0, 0.06419, 0)
+CatListPlate.Size = UDim2.new(0.20289, 0, 0.935, 0)
+CatListPlate.Position = UDim2.new(0.08395, 0, 0.055, 0)
 CatListPlate.Name = "Category List Plate"
 CatListPlate.BackgroundTransparency = 1
 Instance.new("UICorner", CatListPlate)
@@ -1196,8 +1196,8 @@ UI_Elements.CatList = CatListPlate
 local ModulePlate = Instance.new("Frame", ToolboxGui)
 ModulePlate.BorderSizePixel = 0
 ModulePlate.BackgroundColor3 = WHITE
-ModulePlate.Size = UDim2.new(0.27459, 0, 0.90998, 0)
-ModulePlate.Position = UDim2.new(0.29558, 0, 0.06419, 0)
+ModulePlate.Size = UDim2.new(0.27459, 0, 0.935, 0)
+ModulePlate.Position = UDim2.new(0.29558, 0, 0.055, 0)
 ModulePlate.Name = "Module Plate"
 ModulePlate.BackgroundTransparency = 1
 Instance.new("UICorner", ModulePlate)
@@ -1207,34 +1207,6 @@ ModStroke.Color = WHITE
 RegisterRGB(ModStroke, "Stroke", WHITE)
 -- No aspect-ratio constraint here: desktop module plate should stretch to the Main Plate bottom.
 UI_Elements.Modules = ModulePlate
-
--- Keep the three landscape columns aligned to the ACTUAL bottom of MainPlate.
--- MainPlate is aspect-ratio constrained, so using a large Y scale here makes the
--- columns overshoot on wide/custom-DPI displays. Measure the rendered MainPlate
--- instead and derive each column height from its real bottom edge.
-local function syncLandscapeColumnHeights()
-    task.defer(function()
-        if not MainPlate.Parent then return end
-
-        local mainBottom = MainPlate.AbsolutePosition.Y + MainPlate.AbsoluteSize.Y
-
-        for _, plate in ipairs({LinkPlate, CatListPlate, ModulePlate}) do
-            if plate and plate.Parent then
-                local targetHeight = math.max(1, mainBottom - plate.AbsolutePosition.Y)
-                plate.Size = UDim2.new(plate.Size.X.Scale, plate.Size.X.Offset, 0, targetHeight)
-            end
-        end
-    end)
-end
-
-MainPlate:GetPropertyChangedSignal("AbsoluteSize"):Connect(syncLandscapeColumnHeights)
-MainPlate:GetPropertyChangedSignal("AbsolutePosition"):Connect(syncLandscapeColumnHeights)
-
-local cameraForLandscapeSync = workspace.CurrentCamera
-if cameraForLandscapeSync then
-    cameraForLandscapeSync:GetPropertyChangedSignal("ViewportSize"):Connect(syncLandscapeColumnHeights)
-end
-
 
 local LogoPlate = Instance.new("Frame", ToolboxGui)
 LogoPlate.Name = "Logo Plate"
@@ -3140,29 +3112,27 @@ ShortcutsText.TextXAlignment = Enum.TextXAlignment.Left
 
 local function updateSpacer()
     local containerH = CategoryScroll.AbsoluteWindowSize.Y
-    if containerH <= 0 then
-        containerH = CategoryScroll.AbsoluteSize.Y
-    end
-    if containerH <= 0 then return end
-
+    if containerH == 0 then return end
+    
     local usedHeight = 0
-    local normalChildren = 0
-
+    local childCount = 0
+    
     for _, child in ipairs(CategoryScroll:GetChildren()) do
         if child:IsA("GuiObject") and child.Visible and child ~= ShortcutSpacer and child ~= ShortcutsButton then
-            usedHeight += child.AbsoluteSize.Y > 0 and child.AbsoluteSize.Y or child.Size.Y.Offset
-            normalChildren += 1
+            usedHeight = usedHeight + child.Size.Y.Offset
+            childCount = childCount + 1
         end
     end
-
-    -- UIListLayout adds 5 px between every visible item. With the spacer and
-    -- Shortcut button included there are normalChildren + 1 gaps total.
-    local gapHeight = math.max(0, normalChildren + 1) * CategoryListLayout.Padding.Offset
-    local paddingHeight = CategoryPadding.PaddingTop.Offset + CategoryPadding.PaddingBottom.Offset
-    local shortcutHeight = ShortcutsButton.AbsoluteSize.Y > 0 and ShortcutsButton.AbsoluteSize.Y or 45
-    local available = containerH - usedHeight - shortcutHeight - gapHeight - paddingHeight
-
-    ShortcutSpacer.Size = UDim2.new(1, 0, 0, math.max(0, available))
+    
+    usedHeight = usedHeight + (math.max(0, childCount) * 5) 
+    
+    local footerH = 45 + 10 
+    
+    local available = containerH - usedHeight - footerH
+    
+    local finalSpacerHeight = math.max(0, available) 
+    
+    ShortcutSpacer.Size = UDim2.new(1, 0, 0, finalSpacerHeight)
 end
 
 local function updateScroll(frame, layout, padding)
@@ -3173,17 +3143,11 @@ local function updateScroll(frame, layout, padding)
     frame.CanvasPosition = Vector2.new(0, math.clamp(frame.CanvasPosition.Y, 0, max))
 end
 
-local function refreshCategoryScroll()
-    task.defer(function()
-        updateSpacer()
-        updateScroll(CategoryScroll, CategoryListLayout, CategoryPadding)
-    end)
-end
-
-CategoryScroll:GetPropertyChangedSignal("AbsoluteWindowSize"):Connect(refreshCategoryScroll)
-CategoryScroll:GetPropertyChangedSignal("AbsoluteSize"):Connect(refreshCategoryScroll)
-CatListPlate:GetPropertyChangedSignal("AbsoluteSize"):Connect(refreshCategoryScroll)
-CategoryListLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(refreshCategoryScroll)
+CategoryScroll:GetPropertyChangedSignal("AbsoluteWindowSize"):Connect(updateSpacer)
+CategoryListLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
+    updateScroll(CategoryScroll, CategoryListLayout, CategoryPadding)
+    updateSpacer() 
+end)
 CategoryScroll:GetPropertyChangedSignal("CanvasPosition"):Connect(function() updateScroll(CategoryScroll, CategoryListLayout, CategoryPadding) end)
 
 ModuleScroll:GetPropertyChangedSignal("CanvasPosition"):Connect(function() updateScroll(ModuleScroll, ModuleListLayout, ModulePadding) end)
@@ -3192,15 +3156,6 @@ SettingsScroll:GetPropertyChangedSignal("CanvasPosition"):Connect(function() upd
 SettingsListLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function() updateScroll(SettingsScroll, SettingsListLayout, SettingsPadding) end)
 ShortcutsScroll:GetPropertyChangedSignal("CanvasPosition"):Connect(function() updateScroll(ShortcutsScroll, ShortcutsListLayout, ShortcutsPadding) end)
 ShortcutsListLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function() updateScroll(ShortcutsScroll, ShortcutsListLayout, ShortcutsPadding) end)
-
--- Initial landscape sizing happens only after the scrolling frames exist.
-syncLandscapeColumnHeights()
-refreshCategoryScroll()
-task.defer(function()
-    updateScroll(ModuleScroll, ModuleListLayout, ModulePadding)
-    updateScroll(SettingsScroll, SettingsListLayout, SettingsPadding)
-    updateScroll(ShortcutsScroll, ShortcutsListLayout, ShortcutsPadding)
-end)
 
 Toolbox = { Categories = {}, ActiveCategory = nil }
 
