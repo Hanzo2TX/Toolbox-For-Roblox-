@@ -1,59 +1,30 @@
+local StarterGui = game:GetService("StarterGui")
+
 local UI =
     "https://raw.githubusercontent.com/Hanzo2TX/Toolbox-For-Roblox-/refs/heads/main/New/Toolbox%20UI"
 
 local Features =
     "https://raw.githubusercontent.com/Hanzo2TX/Toolbox-For-Roblox-/refs/heads/main/New/Games/Mimic/B3C1/Features"
 
-local Loader =
-    "https://raw.githubusercontent.com/Hanzo2TX/Toolbox-For-Roblox-/refs/heads/main/New/Games/Mimic/B3C1/Loader"
-
 local LOBBY_ID = 6243699076
 local B3C1_ID = 128715637193371
 
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
+if game.PlaceId ~= LOBBY_ID and game.PlaceId ~= B3C1_ID then
+    StarterGui:SetCore("SendNotification", {
+        Title = "Wrong Game",
+        Text = "This script does not support this game.",
+        Duration = 5
+    })
 
-local function queueLoader()
-    local queue =
-        (syn and syn.queue_on_teleport)
-        or queue_on_teleport
-        or queueonteleport
-
-    if not queue then
-        return
-    end
-
-    queue(string.format([[
-        getgenv().ToolboxEgaoAutoFind = %s
-
-        loadstring(game:HttpGet(%q))()
-    ]],
-        tostring(getgenv().ToolboxEgaoAutoFind == true),
-        Loader
-    ))
+    return
 end
 
-queueLoader()
+if not game:IsLoaded() then
+    game.Loaded:Wait()
+end
 
 loadstring(game:HttpGet(UI))()
 
 if game.PlaceId == B3C1_ID then
     loadstring(game:HttpGet(Features))()
-
-elseif game.PlaceId == LOBBY_ID
-    and getgenv().ToolboxEgaoAutoFind == true then
-
-    task.wait(2)
-
-    queueLoader()
-
-    local Lobby = ReplicatedStorage
-        :WaitForChild("LobbyInterface")
-        :WaitForChild("Networking")
-        :WaitForChild("Lobby")
-
-    Lobby:FireServer("SingleplayerTeleport", {
-        Chapter = 1,
-        Mode = "Normal",
-        Book = "Rage"
-    })
 end
