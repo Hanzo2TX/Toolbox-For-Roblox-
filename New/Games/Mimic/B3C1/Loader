@@ -1,1 +1,5 @@
+local UI = "https://raw.githubusercontent.com/Hanzo2TX/Toolbox-For-Roblox-/refs/heads/main/New/Toolbox%20UI"
+local Features = "https://raw.githubusercontent.com/Hanzo2TX/Toolbox-For-Roblox-/refs/heads/main/New/Games/Mimic/B3C1/Features"
 
+loadstring(game:HttpGet(UI))()
+loadstring(game:HttpGet(Features))()
