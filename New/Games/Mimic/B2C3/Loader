@@ -1,0 +1,35 @@
+local StarterGui = game:GetService("StarterGui")
+
+local UI = "https://raw.githubusercontent.com/Hanzo2TX/Toolbox-For-Roblox-/refs/heads/main/New/Toolbox%20UI"
+local Features = "https://raw.githubusercontent.com/Hanzo2TX/Toolbox-For-Roblox-/refs/heads/main/New/Games/Mimic/B2C3/Features"
+
+local LOBBY_ID = 6243699076
+local B2C3_ID = 15962819441
+
+if not game:IsLoaded() then
+    game.Loaded:Wait()
+end
+
+if game.PlaceId ~= LOBBY_ID and game.PlaceId ~= B2C3_ID then
+    StarterGui:SetCore("SendNotification", {
+        Title = "Wrong Game",
+        Text = "This script does not support this game.",
+        Duration = 5
+    })
+    return
+end
+
+getgenv().ToolboxSkipIntro = (game.PlaceId == LOBBY_ID)
+
+loadstring(game:HttpGet(UI))()
+
+if game.PlaceId == LOBBY_ID then
+    StarterGui:SetCore("SendNotification", {
+        Title = "Toolbox",
+        Text = "You are in Lobby.",
+        Duration = 5
+    })
+    return
+end
+
+loadstring(game:HttpGet(Features))()
