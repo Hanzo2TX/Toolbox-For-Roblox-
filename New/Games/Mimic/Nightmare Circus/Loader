@@ -1,1 +1,11 @@
+local UI = "https://raw.githubusercontent.com/Hanzo2TX/Toolbox-For-Roblox-/refs/heads/main/New/Toolbox%20UI"
+local Features = "https://raw.githubusercontent.com/Hanzo2TX/Toolbox-For-Roblox-/refs/heads/main/New/Games/Mimic/Nightmare%20Circus/Features"
 
+if not game:IsLoaded() then
+    game.Loaded:Wait()
+end
+
+getgenv().ToolboxSkipIntro = false
+
+loadstring(game:HttpGet(UI))()
+loadstring(game:HttpGet(Features))()
