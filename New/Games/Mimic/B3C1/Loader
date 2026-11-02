@@ -23,23 +23,52 @@ if not game:IsLoaded() then
 end
 
 local ContinueButton = Instance.new("BindableFunction")
+local Responded = false
+
+local function LoadToolbox()
+    loadstring(game:HttpGet(UI))()
+    loadstring(game:HttpGet(Features))()
+end
 
 ContinueButton.OnInvoke = function(choice)
+    if Responded then
+        return
+    end
+
+    Responded = true
+
     if choice == "Continue" then
         ContinueButton:Destroy()
-
-        loadstring(game:HttpGet(UI))()
-        loadstring(game:HttpGet(Features))()
+        LoadToolbox()
     elseif choice == "Close" then
         ContinueButton:Destroy()
     end
 end
 
-StarterGui:SetCore("SendNotification", {
+local Notification = {
     Title = "Server Authority Warning",
-    Text = "This game has a new anti-cheat called Server Authority. Some script features may no longer work. Continue anyway?",
+    Text = "New anti-cheat: Server Authority. Some features may not work. Continue?",
     Duration = 30,
     Button1 = "Continue",
     Button2 = "Close",
     Callback = ContinueButton
-})
+}
+
+local Success = false
+
+for i = 1, 5 do
+    Success = pcall(function()
+        StarterGui:SetCore("SendNotification", Notification)
+    end)
+
+    if Success then
+        break
+    end
+
+    task.wait(1)
+end
+
+if not Success then
+    ContinueButton:Destroy()
+    warn("Toolbox: Failed to display confirmation notification.")
+end
