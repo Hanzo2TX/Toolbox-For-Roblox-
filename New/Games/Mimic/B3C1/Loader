@@ -1,21 +1,14 @@
 --[[
- ____    ____       _       ______   ________   ______  ____  ____                       
-|_   \  /   _|     / \     |_   _ `.|_   __  | |_   _ \|_  _||_  _|                      
-  |   \/   |      / _ \      | | `. \ | |_ \_|   | |_) | \ \  / /                        
-  | |\  /| |     / ___ \     | |  | | |  _| _    |  __'.  \ \/ /                         
- _| |_\/_| |_  _/ /   \ \_  _| |_.' /_| |__/ |  _| |__) | _|  |_                         
-|_____||_____||____| |____||______.'|________| |_______/ |______|                        
- ____  ____       _       ____  _____  ________    ___   _______   _________  ____  ____ 
-|_   ||   _|     / \     |_   \|_   _||  __   _| .'   `.|_   __ \ |  _   _  ||_  _||_  _|
-  | |__| |      / _ \      |   \ | |  |_/  / /  /  .-.  \ | |__) ||_/ | | \_|  \ \  / /  
-  |  __  |     / ___ \     | |\ \| |     .'.' _ | |   | | |  __ /     | |       > `' <   
- _| |  | |_  _/ /   \ \_  _| |_\   |_  _/ /__/ |\  `-'  /_| |  \ \_  _| |_    _/ /'`\ \_ 
-|____||____||____| |____||_____|\____||________| `.___.'|____| |___||_____|  |____||____|
-Join my server instead of trying to skid my script https://discord.gg/BGAHXggvh
+ ____    ____       _       ______   ________   ______  ____  ____
+|_   \  /   _|     / \     |_   _ `.|_   __  | |_   _ \|_  _||_  _|
+  |   \/   |      / _ \      | | `. \ | |_ \_|   | |_) | \ \  / /
+  | |\  /| |     / ___ \     | |  | | |  _| _    |  __'.  \ \/ /
+ _| |_\/_| |_  _/ /   \ \_  _| |_.' /_| |__/ |  _| |__) | _|  |_
+|_____||_____||____| |____||______.'|________| |_______/ |______|
 
+Join my server instead of trying to skid my script
+https://discord.gg/BGAHXggvh
 ]]--
-
-local StarterGui = game:GetService("StarterGui")
 
 local UI =
     "https://raw.githubusercontent.com/Hanzo2TX/Toolbox-For-Roblox-/refs/heads/main/New/Toolbox%20UI"
@@ -23,29 +16,9 @@ local UI =
 local Features =
     "https://raw.githubusercontent.com/Hanzo2TX/Toolbox-For-Roblox-/refs/heads/main/New/Games/Mimic/B3C1/Features"
 
-local LOBBY_ID = 6243699076
-local B3C1_ID = 91058462594174
-local NIGHTMARE_ID = 91058462594174
-
-if game.PlaceId ~= LOBBY_ID
-    and game.PlaceId ~= B3C1_ID
-    and game.PlaceId ~= NIGHTMARE_ID then
-
-    StarterGui:SetCore("SendNotification", {
-        Title = "Wrong Game",
-        Text = "This script does not support this game.",
-        Duration = 5
-    })
-
-    return
-end
-
 if not game:IsLoaded() then
     game.Loaded:Wait()
 end
 
 loadstring(game:HttpGet(UI))()
-
-if game.PlaceId == B3C1_ID then
-    loadstring(game:HttpGet(Features))()
-end
+loadstring(game:HttpGet(Features))()
