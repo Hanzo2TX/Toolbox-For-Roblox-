@@ -10,6 +10,8 @@ Join my server instead of trying to skid my script
 https://discord.gg/BGAHXggvh
 ]]--
 
+local StarterGui = game:GetService("StarterGui")
+
 local UI =
     "https://raw.githubusercontent.com/Hanzo2TX/Toolbox-For-Roblox-/refs/heads/main/New/Toolbox%20UI"
 
@@ -20,5 +22,24 @@ if not game:IsLoaded() then
     game.Loaded:Wait()
 end
 
-loadstring(game:HttpGet(UI))()
-loadstring(game:HttpGet(Features))()
+local ContinueButton = Instance.new("BindableFunction")
+
+ContinueButton.OnInvoke = function(choice)
+    if choice == "Continue" then
+        ContinueButton:Destroy()
+
+        loadstring(game:HttpGet(UI))()
+        loadstring(game:HttpGet(Features))()
+    elseif choice == "Close" then
+        ContinueButton:Destroy()
+    end
+end
+
+StarterGui:SetCore("SendNotification", {
+    Title = "Server Authority Warning",
+    Text = "This game has a new anti-cheat called Server Authority. Some script features may no longer work. Continue anyway?",
+    Duration = 30,
+    Button1 = "Continue",
+    Button2 = "Close",
+    Callback = ContinueButton
+})
