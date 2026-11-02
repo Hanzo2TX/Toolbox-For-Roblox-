@@ -37,17 +37,16 @@ ContinueButton.OnInvoke = function(choice)
 
     Responded = true
 
+    ContinueButton:Destroy()
+
     if choice == "Continue" then
-        ContinueButton:Destroy()
         LoadToolbox()
-    elseif choice == "Close" then
-        ContinueButton:Destroy()
     end
 end
 
 local Notification = {
-    Title = "Server Authority Warning",
-    Text = "New anti-cheat: Server Authority. Some features may not work. Continue?",
+    Title = "Anti-Cheat Warning",
+    Text = "Script is broken cause of new anti-cheat",
     Duration = 30,
     Button1 = "Continue",
     Button2 = "Close",
