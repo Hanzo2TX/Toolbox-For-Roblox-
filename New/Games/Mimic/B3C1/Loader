@@ -24,7 +24,7 @@ local Features =
     "https://raw.githubusercontent.com/Hanzo2TX/Toolbox-For-Roblox-/refs/heads/main/New/Games/Mimic/B3C1/Features"
 
 local LOBBY_ID = 6243699076
-local B3C1_ID = 128715637193371
+local B3C1_ID = 91058462594174
 local NIGHTMARE_ID = 91058462594174
 
 if game.PlaceId ~= LOBBY_ID
