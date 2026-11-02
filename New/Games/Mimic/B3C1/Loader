@@ -25,8 +25,12 @@ local Features =
 
 local LOBBY_ID = 6243699076
 local B3C1_ID = 128715637193371
+local NIGHTMARE_ID = 91058462594174
 
-if game.PlaceId ~= LOBBY_ID and game.PlaceId ~= B3C1_ID then
+if game.PlaceId ~= LOBBY_ID
+    and game.PlaceId ~= B3C1_ID
+    and game.PlaceId ~= NIGHTMARE_ID then
+
     StarterGui:SetCore("SendNotification", {
         Title = "Wrong Game",
         Text = "This script does not support this game.",
